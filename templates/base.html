@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" itemscope itemtype="https://schema.org/WebPage">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ══ PRIMARY SEO META ══ -->
+    <title>{% block title %}{{ settings.site_title if settings else "Muhammad Hassan | AI Engineer & LLM Builder" }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ settings.meta_description if settings else "Muhammad Hassan — AI Engineer & LLM Builder building RAG systems, LLM applications, machine learning pipelines, and AI automation tools." }}{% endblock %}">
+    <meta name="keywords" content="Muhammad Hassan, Muhammad Hassan portfolio, AI Engineer, LLM Builder, RAG, LangChain, ChromaDB, machine learning, AI automation, Python, Pakistan, University of Layyah">
+    <meta name="author" content="{{ settings.name if settings else "Muhammad Hassan" }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <meta name="language" content="English">
+    <meta name="geo.region" content="PK">
+    <meta name="geo.placename" content="Pakistan">
+
+    <!-- ══ CANONICAL ══ -->
+    <link rel="canonical" href="{{ request.base_url }}">
+
+    <!-- ══ FAVICON ══ -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+
+    <!-- ══ OPEN GRAPH (Facebook / LinkedIn) ══ -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Muhammad Hassan Portfolio">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="{% block og_title %}{{ settings.site_title if settings else "Muhammad Hassan | AI Engineer & LLM Builder" }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ settings.meta_description if settings else "Muhammad Hassan — AI Engineer & LLM Builder building RAG systems, LLM applications, machine learning pipelines, and AI automation tools." }}{% endblock %}">
+    <meta property="og:url" content="{{ request.base_url }}">
+    <meta property="og:image" content="{{ url_for('static', filename=settings.profile_image if settings else 'uploads/profile/muhammad_hassan.png', _external=True) }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Muhammad Hassan - AI Engineer & LLM Builder Portfolio">
+
+    <!-- ══ TWITTER CARD ══ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ settings.site_title if settings else "Muhammad Hassan | AI Engineer & LLM Builder" }}">
+    <meta name="twitter:description" content="{{ settings.meta_description if settings else "Muhammad Hassan — AI Engineer & LLM Builder building RAG systems, LLM applications, machine learning pipelines, and AI automation tools." }}">
+    <meta name="twitter:image" content="{{ url_for('static', filename=settings.profile_image if settings else 'uploads/profile/muhammad_hassan.png', _external=True) }}">
+
+    <!-- ══ JSON-LD STRUCTURED DATA — Person & Professional Service Schema ══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "{{ settings.name if settings else "Muhammad Hassan" }}",
+      "alternateName": [
+        "Muhammad Hassan",
+        "mhassan619",
+        "Muhammad Hassan AI",
+        "AI Engineer & LLM Builder"
+      ],
+      "url": "{{ request.host_url }}",
+      "image": "{{ url_for('static', filename=settings.profile_image if settings else 'uploads/profile/muhammad_hassan.png', _external=True) }}",
+      "jobTitle": "AI Engineer & LLM Builder",
+      "description": "{{ settings.name if settings else "Muhammad Hassan" }} is an AI Engineer and LLM Builder focused on RAG systems, LLM applications, machine learning, and AI automation.",
+      "nationality": "Pakistani",
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "AI Engineer & LLM Builder",
+        "occupationLocation": {
+          "@type": "Country",
+          "name": "Pakistan"
+        },
+        "skills": "Artificial Intelligence, LLMs, RAG, LangChain, ChromaDB, Machine Learning, XGBoost, Python, FastAPI, Streamlit, AI Automation"
+      },
+      "knowsAbout": [
+        "Artificial Intelligence",
+        "Large Language Models",
+        "RAG",
+        "LangChain",
+        "ChromaDB",
+        "Machine Learning",
+        "XGBoost",
+        "Python",
+        "FastAPI",
+        "Streamlit",
+        "AI Automation"
+      ],
+      "sameAs": [
+        "{{ settings.github_url if settings else 'https://github.com/mhassan619' }}",
+        "{{ settings.linkedin_url if settings else '' }}"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "PK",
+        "addressRegion": "Pakistan"
+      }
+    }
+    </script>
+
+    <!-- ══ JSON-LD — Website Schema ══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Muhammad Hassan Portfolio",
+      "url": "{{ request.host_url }}",
+      "description": "Portfolio website of Muhammad Hassan – AI Engineer & LLM Builder from Pakistan.",
+      "author": {
+        "@type": "Person",
+        "name": "{{ settings.name if settings else "Muhammad Hassan" }}"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ request.host_url }}#projects",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- ══ FONTS & ICONS ══ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v='9.0') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <a href="#main-content" class="skip-link sr-only" style="position: absolute; top: -100px; left: 1rem; z-index: 9999; padding: 0.5rem 1rem; background: var(--dark, #0f172a); color: var(--primary, #5fbcb8); border-radius: 4px; transition: top 0.2s;" onfocus="this.style.top='1rem'" onblur="this.style.top='-100px'">Skip to main content</a>
+
+    {% block body %}{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/script.js', v='5.0') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

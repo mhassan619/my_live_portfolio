@@ -1,0 +1,526 @@
+{% extends "base.html" %}
+{% block title %}{{ settings.site_title }}{% endblock %}
+{% block meta_description %}{{ settings.meta_description }}{% endblock %}
+
+{% block body %}
+
+    <!-- Navigation Bar -->
+    <nav id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="#home" class="logo" aria-label="{{ settings.name }} Home">
+                <div class="logo-icon" aria-hidden="true">MH</div>
+                <span>{{ settings.name }}</span>
+            </a>
+            <ul class="nav-links" role="list">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#achievements">Achievements</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact" class="btn btn-primary"><i class="fas fa-rocket" aria-hidden="true"></i> Hire Me</a></li>
+            </ul>
+            <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Drawer Navigation -->
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+        <a href="#home" onclick="toggleMenu()">Home</a>
+        <a href="#about" onclick="toggleMenu()">About</a>
+        <a href="#skills" onclick="toggleMenu()">Skills</a>
+        <a href="#experience" onclick="toggleMenu()">Experience</a>
+        <a href="#projects" onclick="toggleMenu()">Projects</a>
+        <a href="#education" onclick="toggleMenu()">Education</a>
+        <a href="#achievements" onclick="toggleMenu()">Achievements</a>
+        <a href="#contact" onclick="toggleMenu()">Contact</a>
+    </nav>
+
+    <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero" id="home" aria-label="Hero" itemscope itemtype="https://schema.org/Person">
+        <canvas class="particles" id="particles1" aria-hidden="true"></canvas>
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content reveal">
+                    <div class="hero-subtitle"><span aria-hidden="true">👋</span> Hi, I'm</div>
+                    <h1 class="hero-name" itemprop="name">{{ settings.name }}</h1>
+                    <div class="hero-role-wrapper" aria-label="Role">
+                        <span class="highlight" id="typing" aria-live="polite" itemprop="jobTitle"></span><span class="typing-cursor" aria-hidden="true"></span>
+                    </div>
+                    <div class="hero-tags">
+                        {% set hero_tag_items = settings.hero_tags | from_json if settings.hero_tags else ["AI Engineer", "LLM Builder", "RAG & AI Automation"] %}
+                        {% for tag in hero_tag_items %}
+                        <div class="hero-tag"><i class="fas fa-{% if 'vision' in tag.lower() or 'mediapipe' in tag.lower() %}eye{% elif 'deep' in tag.lower() or 'cnn' in tag.lower() or 'neural' in tag.lower() %}network-wired{% else %}brain{% endif %}" aria-hidden="true"></i> {{ tag }}</div>
+                        {% endfor %}
+                    </div>
+                    <p class="hero-desc">{{ settings.hero_description }}</p>
+                    <div class="hero-buttons">
+                        {% if settings.resume_url %}
+                        <a href="{{ url_for('static', filename=settings.resume_url) }}" class="btn btn-primary" download aria-label="Download my CV PDF">
+                            <i class="fas fa-download" aria-hidden="true"></i> Download My CV
+                        </a>
+                        {% endif %}
+                        <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                            <i class="fab fa-github" aria-hidden="true"></i> GitHub Profile
+                        </a>
+                    </div>
+                    <div class="social-links" aria-label="Social links">
+                        <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                        </a>
+                        <a href="{{ settings.linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+                            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                        </a>
+                        {% if settings.whatsapp_number %}<a href="https://wa.me/{{ settings.whatsapp_number | replace('+', '') | replace(' ', '') | replace('-', '') }}?text=Hi%20Muhammad%20Hassan,%20I%20saw%20your%20portfolio" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="social-whatsapp">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        </a>{% endif %}
+                        <a href="mailto:{{ settings.contact_email }}" aria-label="Send email to {{ settings.name }}">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image-wrapper reveal" aria-hidden="true">
+                    <div class="hero-image-ring">
+                        <div class="rotating-border"></div>
+                        <img src="{{ url_for('static', filename=settings.profile_image or 'uploads/profile/muhammad_hassan.png') }}" alt="Muhammad Hassan - AI Engineer & LLM Builder from Pakistan" class="hero-img" loading="eager" width="330" height="330">
+                        <div class="badge badge-exp"><i class="fas fa-code-branch"></i><div><strong>{{ settings.projects_badge_count or '7+' }}</strong> Projects</div></div>
+                        <div class="badge badge-loc"><div class="badge-dot"></div><div>{{ settings.location }}</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-green" id="about" aria-label="About">
+        <div class="container">
+            <div class="text-center">
+                <div class="pill" aria-hidden="true">About Me</div>
+                <h2 class="section-title">Building Practical AI That Solves Real Problems</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-img-wrapper reveal">
+                    <img src="{{ url_for('static', filename=settings.profile_image or 'uploads/profile/muhammad_hassan.png') }}" alt="Muhammad Hassan – AI Engineer & LLM Builder from Pakistan" class="about-img" loading="lazy" width="450" height="420">
+                    <div class="about-img-badge" aria-label="{{ settings.projects_badge_count or '7+' }} Projects Built">
+                        <span class="num">{{ settings.projects_badge_count or '7+' }}</span><span class="txt">Projects<br>Built</span>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="about-card">
+                        <dl class="about-card-grid">
+                            <div class="about-card-item"><dt>Name</dt><dd>{{ settings.name }}</dd></div>
+                            <div class="about-card-item"><dt>Location</dt><dd>{{ settings.location }}</dd></div>
+                            <div class="about-card-item"><dt>Domain</dt><dd>{{ settings.about_domain or 'AI Engineering & LLM Applications' }}</dd></div>
+                            <div class="about-card-item"><dt>Availability</dt><dd>{{ settings.availability }}</dd></div>
+                        </dl>
+                    </div>
+                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem; color: var(--dark);">Why Work With Me?</h3>
+                    {% set why_items = settings.why_work_with_me | from_json if settings.why_work_with_me else ["Production-focused RAG and LLM application development", "End-to-end machine learning pipelines with Scikit-learn and XGBoost", "AI automation, API integration, and practical Python engineering", "Live deployment experience with Vercel and Streamlit"] %}
+                    <ul class="about-list" aria-label="Key capabilities">
+                        {% for item in why_items %}
+                        <li><i class="fas fa-check" aria-hidden="true"></i> {{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="about-buttons">
+                        <a href="#contact" class="btn btn-dark"><i class="fas fa-comment-dots" aria-hidden="true"></i> Let's Talk</a>
+                        <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-dark"><i class="fab fa-github" aria-hidden="true"></i> View Repositories</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section-skills" id="skills" aria-label="Skills">
+        <canvas class="particles" id="particlesSkills" aria-hidden="true"></canvas>
+        <div class="container" style="position:relative;z-index:1;">
+            <div class="text-center">
+                <div class="pill pill-skills" aria-hidden="true"><i class="fas fa-microchip"></i> Tech Stack</div>
+                <h2 class="section-title" style="color:#fff;">Skills &amp; <span class="highlight">Expertise</span></h2>
+                <p class="section-subtitle" style="color:#94a3b8;">Technologies &amp; tools I use to build production-ready AI systems</p>
+            </div>
+
+            {% if skills %}
+            <!-- Category Filter Tabs -->
+            {% set categories = skills | map(attribute='category') | unique | list %}
+            <div class="skills-tabs" role="tablist" aria-label="Skill categories">
+                <button class="skills-tab active" role="tab" aria-selected="true" data-filter="all" onclick="filterSkills('all', this)">
+                    <i class="fas fa-th" aria-hidden="true"></i> All
+                </button>
+                {% for cat in categories %}
+                <button class="skills-tab" role="tab" aria-selected="false" data-filter="{{ cat | replace(' ', '_') | lower }}" onclick="filterSkills('{{ cat | replace(' ', '_') | lower }}', this)">
+                    {% if 'LLM' in cat or 'AI' in cat %}
+                        <i class="fas fa-brain" aria-hidden="true"></i>
+                    {% elif 'Machine' in cat or 'ML' in cat %}
+                        <i class="fas fa-chart-line" aria-hidden="true"></i>
+                    {% elif 'Backend' in cat or 'API' in cat %}
+                        <i class="fas fa-server" aria-hidden="true"></i>
+                    {% elif 'Data' in cat %}
+                        <i class="fas fa-database" aria-hidden="true"></i>
+                    {% elif 'Deploy' in cat or 'Cloud' in cat %}
+                        <i class="fas fa-cloud" aria-hidden="true"></i>
+                    {% else %}
+                        <i class="fas fa-code" aria-hidden="true"></i>
+                    {% endif %}
+                    {{ cat }}
+                </button>
+                {% endfor %}
+            </div>
+
+            <!-- Skills Bento Grid -->
+            <div class="skills-bento" id="skillsBento">
+                {% for skill in skills %}
+                <article class="skill-bento-card reveal"
+                         data-category="{{ skill.category | replace(' ', '_') | lower }}"
+                         aria-label="{{ skill.name }}"
+                         style="--delay: {{ loop.index0 * 0.06 }}s">
+                    <div class="sbc-glow"></div>
+                    <div class="sbc-inner">
+                        <div class="sbc-icon-wrap">
+                            <div class="sbc-icon">
+                                <i class="{{ skill.icon_class }}" aria-hidden="true"></i>
+                            </div>
+                            <div class="sbc-level">
+                                {% if skill.proficiency >= 90 %}
+                                    <span class="sbc-badge sbc-badge--expert">Expert</span>
+                                {% elif skill.proficiency >= 80 %}
+                                    <span class="sbc-badge sbc-badge--advanced">Advanced</span>
+                                {% elif skill.proficiency >= 68 %}
+                                    <span class="sbc-badge sbc-badge--mid">Mid</span>
+                                {% else %}
+                                    <span class="sbc-badge sbc-badge--junior">Learning</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <h3 class="sbc-name">{{ skill.name }}</h3>
+                        <p class="sbc-category">{{ skill.category }}</p>
+                        {% if skill.proficiency %}
+                        <div class="sbc-bar-wrap" role="progressbar" aria-valuenow="{{ skill.proficiency }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="sbc-bar">
+                                <div class="sbc-bar-fill" style="--width: {{ skill.proficiency }}%"></div>
+                            </div>
+                            <span class="sbc-pct">{{ skill.proficiency }}%</span>
+                        </div>
+                        {% endif %}
+                        {% if skill.tags_list %}
+                        <div class="sbc-tags">
+                            {% for tag in skill.tags_list %}
+                            <span class="sbc-tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            <!-- Floating Tech Marquee -->
+            <div class="skills-marquee" aria-hidden="true">
+                <div class="marquee-track">
+                    {% for skill in skills %}
+                    <span class="marquee-item"><i class="{{ skill.icon_class }}"></i> {{ skill.name }}</span>
+                    {% endfor %}
+                    {% for skill in skills %}
+                    <span class="marquee-item"><i class="{{ skill.icon_class }}"></i> {{ skill.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    {% if experience %}
+    <section class="section-green" id="experience" aria-label="Experience">
+        <div class="container">
+            <div class="text-center">
+                <div class="pill" aria-hidden="true">Experience</div>
+                <h2 class="section-title">Professional <span style="color: var(--dark);">Journey</span></h2>
+            </div>
+            <div class="timeline" aria-label="Experience timeline">
+                {% for exp in experience %}
+                <article class="timeline-item reveal">
+                    <div class="timeline-icon" aria-hidden="true"><i class="fas fa-briefcase"></i></div>
+                    <div class="timeline-card">
+                        <div class="timeline-info">
+                            <span class="timeline-year">{{ exp.start_date }} – {{ exp.end_date }}</span>
+                            <h3>{{ exp.role }}</h3>
+                            <div class="institute">{{ exp.company }}</div>
+                            {% if exp.description %}<div class="desc">{{ exp.description }}</div>{% endif %}
+                            {% if exp.tech_list %}<div class="prof-tags" style="margin-top:1rem;">{% for tech in exp.tech_list %}<span>{{ tech }}</span>{% endfor %}</div>{% endif %}
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Projects Section -->
+    <section class="section-dark" id="projects" aria-label="Projects">
+        <canvas class="particles" id="particles2" aria-hidden="true"></canvas>
+        <div class="container">
+            <div class="section-header">
+                <div class="pill" aria-hidden="true">My Portfolio</div>
+                <h2 class="section-title">Featured <span class="highlight">Projects</span></h2>
+                <p class="section-subtitle">AI, LLM, RAG, Machine Learning, and automation projects built and shipped 🚀</p>
+            </div>
+            {% if projects %}
+            {% set featured = projects | selectattr('featured') | list %}
+            {% set non_featured = projects | rejectattr('featured') | list %}
+            {% set display_projects = featured + non_featured %}
+
+            <div class="projects-grid" id="projectsGrid">
+                {% for project in display_projects %}
+                <article class="project-card reveal {% if project.featured %}project-card--featured{% endif %} {% if loop.index > 3 %}project-card--extra{% endif %}" style="--proj-theme: {{ project.theme_color }};">
+                    <div class="project-img-wrapper">
+                        {% if project.image %}
+                        <img src="{{ url_for('static', filename=project.image) }}" alt="{{ project.title }}" class="project-img" loading="lazy">
+                        {% else %}
+                        <div class="project-img-placeholder" aria-label="{{ project.category }} project">
+                            <div class="placeholder-mesh-glow"></div>
+                            <div class="placeholder-icon-halo">
+                                <i class="{{ project.icon_class }}" aria-hidden="true"></i>
+                            </div>
+                            <span class="placeholder-domain-badge">
+                                <i class="{{ project.icon_class }}" aria-hidden="true"></i> {{ project.category.split('·')[0].strip() if '·' in project.category else project.category }}
+                            </span>
+                        </div>
+                        {% endif %}
+                        {% if project.featured %}
+                        <span class="project-featured-badge" aria-label="Featured project"><i class="fas fa-star" aria-hidden="true"></i> Featured</span>
+                        {% endif %}
+                        <a href="{{ url_for('public.project_detail', slug=project.slug) }}" class="project-play" aria-label="View {{ project.title }} details">
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta-row">
+                            <span class="project-category">{{ project.category }}</span>
+                            <span class="project-domain-badge" title="Project Domain: {{ project.category }}">
+                                <i class="{{ project.icon_class }}" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <h3>
+                            <a href="{{ url_for('public.project_detail', slug=project.slug) }}">
+                                <i class="{{ project.icon_class }} project-title-icon" aria-hidden="true"></i>
+                                <span>{{ project.title }}</span>
+                            </a>
+                        </h3>
+                        <p>{{ project.short_description }}</p>
+                        {% set techs = project.technologies | from_json %}
+                        {% if techs %}
+                        <div class="project-tags" aria-label="{{ project.title }} technologies">
+                            {% for tech in techs[:4] %}
+                            <span class="project-tag">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="project-links">
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="{{ project.title }} GitHub repository">
+                                <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                            </a>
+                            {% endif %}
+                            <a href="{{ url_for('public.project_detail', slug=project.slug) }}" class="project-link project-link--primary">
+                                Details <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            {% if display_projects | length > 3 %}
+            <button class="btn btn-outline view-more-btn" id="viewMoreBtn" onclick="toggleProjects()" aria-expanded="false" aria-controls="projectsGrid">
+                <i class="fas fa-folder-open" aria-hidden="true"></i> View More Projects <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </button>
+            {% endif %}
+            {% else %}
+            <p class="no-content-msg">Projects coming soon. Check back later.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section-green" id="education" aria-label="Education">
+        <div class="container">
+            <div class="text-center">
+                <div class="pill" aria-hidden="true">Education</div>
+                <h2 class="section-title">Academic &amp; Technical <span style="color: var(--dark);">Journey</span></h2>
+            </div>
+            {% if education %}
+            <ol class="timeline" aria-label="Education timeline">
+                {% for edu in education %}
+                <li class="timeline-item reveal">
+                    <div class="timeline-icon" aria-hidden="true">
+                        <i class="fas fa-{% if 'university' in edu.institution.lower() or 'bsc' in edu.level.lower() %}university{% elif 'ai' in edu.level.lower() or 'ml' in edu.level.lower() %}brain{% else %}graduation-cap{% endif %}"></i>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="timeline-info">
+                            <span class="timeline-year">{{ edu.level }}</span>
+                            <h3>{{ edu.degree }}</h3>
+                            <div class="institute">{{ edu.institution }}</div>
+                            {% if edu.description %}<div class="desc">{{ edu.description }}</div>{% endif %}
+                        </div>
+                        {% if edu.score %}
+                        <div class="timeline-score" aria-label="{{ edu.score_label }}: {{ edu.score }}">
+                            <div class="num">{{ edu.score.split('/')[0] }}</div>
+                            <div class="label">{{ edu.score_label }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Certifications Section (shown only if data exists) -->
+    {% if certifications %}
+    <section class="section-light" id="certifications" aria-label="Certifications">
+        <div class="container">
+            <div class="text-center">
+                <div class="pill" aria-hidden="true">Credentials</div>
+                <h2 class="section-title">Certifications</h2>
+            </div>
+            <div class="certs-grid">
+                {% for cert in certifications %}
+                <article class="cert-card reveal">
+                    {% if cert.image %}
+                    <img src="{{ url_for('static', filename=cert.image) }}" alt="{{ cert.title }} certificate" class="cert-img" loading="lazy">
+                    {% endif %}
+                    <div class="cert-body">
+                        <h3>{{ cert.title }}</h3>
+                        <p class="cert-issuer">{{ cert.issuer }}</p>
+                        {% if cert.issue_date %}<p class="cert-date">{{ cert.issue_date }}</p>{% endif %}
+                        {% if cert.credential_url %}
+                        <a href="{{ cert.credential_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline cert-btn">
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Credential
+                        </a>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Achievements Section -->
+    <section class="section-green" id="achievements" aria-label="Achievements">
+        <div class="container">
+            <div class="text-center">
+                <div class="pill" aria-hidden="true">Recognition</div>
+                <h2 class="section-title">Achievements &amp; Awards</h2>
+            </div>
+            <div class="certs-grid">
+                <article class="cert-card reveal"><img src="{{ url_for('static', filename='uploads/achievements/IEE_South_Punjab_Hackathon_2026.jpg') }}" alt="IEE South Punjab Hackathon 2026 recognition" class="cert-img" loading="lazy"><div class="cert-body"><h3>2nd Position — IEE South Punjab Hackathon 2026</h3><p class="cert-issuer">Generative AI Coding Challenge</p></div></article>
+                <article class="cert-card reveal"><img src="{{ url_for('static', filename='uploads/achievements/Honehar_Scholarship.png') }}" alt="Honehaar Scholarship" class="cert-img" loading="lazy"><div class="cert-body"><h3>Honehaar Scholarship</h3><p class="cert-issuer">4-year full fee waiver for academic merit</p></div></article>
+                <article class="cert-card reveal"><img src="{{ url_for('static', filename='uploads/achievements/CM_Laptop_Scheme.png') }}" alt="Chief Minister Laptop Award" class="cert-img" loading="lazy"><div class="cert-body"><h3>Chief Minister Laptop Award</h3><p class="cert-issuer">Academic performance recognition</p></div></article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section-dark" id="contact" aria-label="Contact">
+        <canvas class="particles" id="particles3" aria-hidden="true"></canvas>
+        <div class="container">
+            <div class="section-header">
+                <div class="pill" aria-hidden="true">Get In Touch</div>
+                <h2 class="section-title">Let's <span class="highlight">Collaborate</span></h2>
+                <p class="section-subtitle">Have an AI, LLM, automation project, or job opportunity? Send me a message!</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info reveal">
+                    <div class="contact-card">
+                        <div class="contact-card-header">
+                            <div class="contact-card-icon" aria-hidden="true"><i class="fab fa-github"></i></div>
+                            <div><h3>GitHub Profile</h3></div>
+                        </div>
+                        <p>{{ settings.github_handle or '@mhassan619' }}</p>
+                        <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <i class="fab fa-github" aria-hidden="true"></i> Visit Profile
+                        </a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-header">
+                            <div class="contact-card-icon" aria-hidden="true"><i class="fas fa-envelope"></i></div>
+                            <div><h3>Email Me</h3></div>
+                        </div>
+                        <p>{{ settings.contact_email }}</p>
+                        <a href="mailto:{{ settings.contact_email }}" class="btn btn-primary">
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Email
+                        </a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-header">
+                            <div class="contact-card-icon" aria-hidden="true"><i class="fas fa-location-dot"></i></div>
+                            <div><h3>Location</h3></div>
+                        </div>
+                        <p>{{ settings.location }}<br>Available for Remote &amp; On-Site Roles</p>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper reveal">
+                    <!-- CSRF Token for JS fetch -->
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                    <form id="contactForm" novalidate aria-label="Contact form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-name">Full Name <span class="required" aria-hidden="true">*</span></label>
+                                <input type="text" id="contact-name" name="name" placeholder="Your Name" required maxlength="100" autocomplete="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email Address <span class="required" aria-hidden="true">*</span></label>
+                                <input type="email" id="contact-email" name="email" placeholder="your@email.com" required maxlength="120" autocomplete="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-subject">Subject <span class="required" aria-hidden="true">*</span></label>
+                            <input type="text" id="contact-subject" name="subject" placeholder="What's this about?" required maxlength="200">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Message <span class="required" aria-hidden="true">*</span></label>
+                            <textarea id="contact-message" name="message" placeholder="Tell me about your project or opportunity..." required rows="5" maxlength="3000"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary submit-btn" id="contactSubmitBtn">
+                            <span class="btn-text"><i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message</span>
+                            <span class="btn-loading" aria-hidden="true"><i class="fas fa-spinner fa-spin"></i> Sending...</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="follow-section">
+                <h3>Follow Me On</h3>
+                <div class="follow-links" aria-label="Social media links">
+                    <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+                    <a href="{{ settings.linkedin_url }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    {% if settings.whatsapp_number %}<a href="https://wa.me/{{ settings.whatsapp_number | replace('+', '') | replace(' ', '') | replace('-', '') }}?text=Hi%20Muhammad%20Hassan,%20I%20saw%20your%20portfolio" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="color: #25d366;"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>{% endif %}
+                    <a href="mailto:{{ settings.contact_email }}" aria-label="Email"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <p>&copy; {{ now().year if now is defined else 2026 }} {{ settings.name }} | AI Engineer &amp; LLM Builder &nbsp;·&nbsp;
+            <a href="{{ settings.github_url }}" target="_blank" rel="noopener noreferrer" style="color: inherit;">GitHub</a> &nbsp;·&nbsp;
+            <a href="{{ settings.linkedin_url }}" target="_blank" rel="noopener noreferrer" style="color: inherit;">LinkedIn</a>
+        </p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+{% endblock %}
